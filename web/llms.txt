@@ -1,0 +1,16 @@
+# SpotLED Editor
+
+> Free, unofficial browser editor for SpotLED 48×12 LED boards. Draw animations (up to 20 frames), type scrolling text with built-in or custom fonts, import PNG images, pick ready-made animations, and send everything to the board over Bluetooth LE (Web Bluetooth). Works in Chrome, Chromium and Edge. Not affiliated with the manufacturer of the SpotLED device.
+
+Key facts:
+- Display: 48×12 pixels, up to 20 frames per animation, effects such as scroll, stack, expand and laser.
+- Requires a browser with Web Bluetooth (Chrome, Chromium, Edge; not Firefox or Safari).
+- Projects are JSON files, compatible with the native Android app.
+- Interface languages: English, Polish, German, French, Spanish, Italian, Czech, Hungarian, Ukrainian, Russian, Chinese, Japanese.
+- Linux/BlueZ note: the board's HID service can make BlueZ drop the connection; the README explains a workaround.
+
+## Links
+- [Online editor](https://ordigital.github.io/spotled-android/): the web app
+- [Source code and README](https://github.com/ordigital/spotled-android#readme): documentation, build instructions, Linux troubleshooting
+- [Android app releases](https://github.com/ordigital/spotled-android/releases/latest): native Android version (Android 5.0+)
+- [Support the author](https://buymeacoffee.com/adamstrad): Buy Me a Coffee; also [Suppi](https://suppi.pl/adamstrad)
