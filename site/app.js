@@ -187,7 +187,7 @@ const lab = s => { const e = document.createElement('span'); e.textContent = s; 
 function renderView() {
   const v = $('view'); v.innerHTML = '';
   if (view === 'board') {
-    cv = document.createElement('canvas'); cv.id = 'cv'; cv.width = W * CELL; cv.height = H * CELL; g = cv.getContext('2d'); v.append(cv); bindBoard(); drawBoard();
+    cv = document.createElement('canvas'); cv.id = 'cv'; cv.setAttribute('role', 'img'); cv.setAttribute('aria-label', 'LED board 48×12 pixel canvas'); cv.width = W * CELL; cv.height = H * CELL; g = cv.getContext('2d'); v.append(cv); bindBoard(); drawBoard();
     const nav = document.createElement('div'); nav.className = 'row';
     const num = document.createElement('b'); num.id = 'fnum';
     const dots = document.createElement('div'); dots.id = 'dots';

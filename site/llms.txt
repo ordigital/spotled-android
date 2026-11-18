@@ -10,7 +10,7 @@ Key facts:
 - Linux/BlueZ note: the board's HID service can make BlueZ drop the connection; the README explains a workaround.
 
 ## Links
-- [Online editor](https://ordigital.github.io/spotled-android/): the web app
+- [Online editor](https://spotled.adamstrad.pl/): the web app
 - [Source code and README](https://github.com/ordigital/spotled-android#readme): documentation, build instructions, Linux troubleshooting
 - [Android app releases](https://github.com/ordigital/spotled-android/releases/latest): native Android version (Android 5.0+)
 - [Support the author](https://buymeacoffee.com/adamstrad): Buy Me a Coffee; also [Suppi](https://suppi.pl/adamstrad)

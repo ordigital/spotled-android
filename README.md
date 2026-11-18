@@ -1,12 +1,12 @@
 # SpotLED Editor for Android
 
-<p align="center"><a href="https://buymeacoffee.com/adamstrad">💗 buy me a cofee</a></p>
+<p align="center"><a href="https://buymeacoffee.com/adamstrad">💗 buy me a coffee</a></p>
 
-<p align="center"><a href="https://ordigital.github.io/spotled-android/"><b>Open the online editor</b></a> (Chrome, Chromium or Edge)</p>
+<p align="center"><a href="https://spotled.adamstrad.pl/"><b>Open the online editor</b></a> (Chrome, Chromium or Edge)</p>
 
-A native Android editor for animations on SpotLED 48×12 LED boards, controlled over Bluetooth LE. An experimental browser version is also available in `web/`; see [Web version (experimental)](#web-version-experimental).
+A native Android editor for animations on SpotLED 48×12 LED boards, controlled over Bluetooth LE. An experimental browser version is also available in `site/`; see [Web version (experimental)](#web-version-experimental).
 
-![Screenshot](docs/screenshot.png)
+![Screenshot](docs/screenshot.webp)
 
 > **Disclaimer:** This is an independent, unofficial hobby project. The author is **not** affiliated with, endorsed by, or connected to the manufacturer of the SpotLED device. Product names are used only to describe compatibility. The software is provided as is, use at your own risk.
 
@@ -32,7 +32,7 @@ A native Android editor for animations on SpotLED 48×12 LED boards, controlled 
 
 ## Web version (experimental)
 
-The browser version lives in `web/`. It is plain HTML/JavaScript with no build step, and it talks to the board over Web Bluetooth.
+The browser version lives in `site/`. It is plain HTML/JavaScript with no build step, and it talks to the board over Web Bluetooth.
 
 - **Supported browsers:** Chrome, Chromium or Edge on desktop Linux and Windows, and on Android. macOS is not guaranteed. Firefox and Safari do not support Web Bluetooth.
 - **Brave:** enable `brave://flags/#brave-web-bluetooth-api`.
@@ -40,19 +40,19 @@ The browser version lives in `web/`. It is plain HTML/JavaScript with no build s
 To try it locally, serve the folder (Web Bluetooth requires HTTPS or `localhost`):
 
 ```bash
-python3 -m http.server 8765 --directory web
+python3 -m http.server 8765 --directory site
 ```
 
 Then open http://localhost:8765.
 
-Hosting on GitHub Pages is planned at https://ordigital.github.io/spotled-android/.
+The editor is hosted at https://spotled.adamstrad.pl/ (the old GitHub Pages address redirects there).
 
 The web version has the same features as the app: canvas editor, frames, tools, text tab, gallery, open/save JSON, 12 languages, and light/dark theme.
 
 To run the protocol self-test:
 
 ```bash
-node web/selftest.mjs
+node site/selftest.mjs
 ```
 
 ### Linux (BlueZ) troubleshooting

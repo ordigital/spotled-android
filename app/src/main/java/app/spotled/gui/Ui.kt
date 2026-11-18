@@ -93,7 +93,7 @@ private fun ColumnScope.CoffeeLink() {
         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(3.dp),
     ) {
         Icon(Icons.Filled.Favorite, null, tint = pink, modifier = Modifier.size(11.dp))
-        Text("buy me a cofee", color = pink, fontSize = 10.sp)
+        Text("buy me a coffee", color = pink, fontSize = 10.sp)
     }
 }
 

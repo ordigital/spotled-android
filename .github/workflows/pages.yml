@@ -1,8 +1,8 @@
-name: Deploy web editor to GitHub Pages
+name: GitHub Pages redirect to spotled.adamstrad.pl
 on:
   push:
     branches: [main]
-    paths: ['web/**', '.github/workflows/pages.yml']
+    paths: ['.github/pages-redirect/**', '.github/workflows/pages.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -22,6 +22,6 @@ jobs:
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: web
+          path: .github/pages-redirect
       - id: deployment
         uses: actions/deploy-pages@v4
