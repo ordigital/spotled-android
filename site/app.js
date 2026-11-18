@@ -82,8 +82,8 @@ function loadProject(s, nm) {
 
 // ---------- UI shell ----------
 function applyTheme() { document.documentElement.dataset.theme = dark ? 'dark' : 'light'; }
-function btn(label, icon, fn, cls = 'chip', dis = false) {
-  const b = document.createElement('button'); b.className = cls; b.disabled = dis;
+function btn(label, icon, fn, cls = 'chip', dis = false, aria = '') {
+  const b = document.createElement('button'); b.type = 'button'; b.className = cls; b.disabled = dis; if (!label && aria) b.setAttribute('aria-label', aria);
   b.innerHTML = (icon ? svg(icon) : '') + (label ? `<span>${label}</span>` : ''); b.onclick = fn; return b;
 }
 function renderRail() {
@@ -103,10 +103,10 @@ function renderTop() {
   const top = $('top'); top.innerHTML = '';
   const title = document.createElement('div'); title.id = 'title'; title.textContent = name || t('new_project'); top.append(title);
   if (view === 'board') {
-    top.append(btn('', 'undo', undo, 'chip', busy() || hist.pos === 0), btn('', 'redo', redo, 'chip', busy() || hist.pos >= hist.edits.length),
+    top.append(btn('', 'undo', undo, 'chip', busy() || hist.pos === 0, t('undo')), btn('', 'redo', redo, 'chip', busy() || hist.pos >= hist.edits.length, t('redo')),
       btn(playing ? t('stop') : t('play'), playing ? 'stop' : 'play', () => playing ? stopPlay() : startPlay()));
   }
-  top.append(btn('', 'globe', openLang), btn('', dark ? 'sun' : 'moon', () => { dark = !dark; store.set('dark', dark ? '1' : '0'); applyTheme(); render(); }));
+  top.append(btn('', 'globe', openLang, 'chip', false, t('language')), btn('', dark ? 'sun' : 'moon', () => { dark = !dark; store.set('dark', dark ? '1' : '0'); applyTheme(); render(); }, 'chip', false, t(dark ? 'theme_to_light' : 'theme_to_dark')));
   top.querySelectorAll('button').forEach((b, i, a) => { b.title = ''; });
 }
 const A = (u, txt) => `<a href="${u}" target="_blank" rel="noopener">${txt}</a>`;
@@ -175,10 +175,10 @@ function delFrame() { if (busy()) return; if (proj.frames.length === 1) proj.fra
 function goTo(i) { if (!busy()) { proj.current = Math.max(0, Math.min(proj.frames.length - 1, i)); render(); } }
 function commitPlacement() { if (!placement) return; const b = placement.base; setCur(composed()); record(proj.current, b, cur()); placement = null; render(); }
 function updateNav() { const n = document.getElementById('fnum'); if (n) n.textContent = `${proj.current + 1} / ${proj.frames.length}`; }
-const effectSel = (val, fn) => { const s = document.createElement('select'); P.EFFECTS.forEach(e => s.add(new Option(e, e, false, e === val))); s.onchange = () => fn(s.value); return s; };
+const effectSel = (val, fn) => { const s = document.createElement('select'); s.setAttribute('aria-label', t('effect')); P.EFFECTS.forEach(e => s.add(new Option(e, e, false, e === val))); s.onchange = () => fn(s.value); return s; };
 function speedRow(label, min, get, set, unit) {
   const d = document.createElement('div'); d.className = 'row';
-  const r = document.createElement('input'); r.type = 'range'; r.min = min; r.max = 3500; r.value = get();
+  const r = document.createElement('input'); r.type = 'range'; r.setAttribute('aria-label', label.textContent); r.min = min; r.max = 3500; r.value = get();
   const v = document.createElement('b'); v.style.minWidth = '64px'; const show = () => v.textContent = get() + unit;
   r.oninput = () => { set(+r.value); show(); }; show();
   d.append(label, r, v); return d;
@@ -191,17 +191,17 @@ function renderView() {
     const nav = document.createElement('div'); nav.className = 'row';
     const num = document.createElement('b'); num.id = 'fnum';
     const dots = document.createElement('div'); dots.id = 'dots';
-    proj.frames.forEach((_, i) => { const d = document.createElement('i'); if (i === proj.current) d.className = 'on'; d.onclick = () => goTo(i); dots.append(d); });
+    proj.frames.forEach((_, i) => { const d = document.createElement('i'); if (i === proj.current) d.className = 'on'; d.setAttribute('role', 'button'); d.tabIndex = 0; d.setAttribute('aria-label', `${i + 1} / ${proj.frames.length}`); d.onclick = () => goTo(i); d.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goTo(i); } }; dots.append(d); });
     const dis = busy();
-    nav.append(btn('', 'prev', () => goTo(proj.current - 1), 'chip', dis), num, btn('', 'next', () => goTo(proj.current + 1), 'chip', dis), dots,
-      btn('', 'plus', addFrame, 'chip', dis), btn('', 'copy', () => { if (proj.current > 0) edit(() => proj.frames[proj.current - 1].slice()); }, 'chip', dis || proj.current === 0), btn('', 'del', delFrame, 'chip', dis));
+    nav.append(btn('', 'prev', () => goTo(proj.current - 1), 'chip', dis, t('prev_frame')), num, btn('', 'next', () => goTo(proj.current + 1), 'chip', dis, t('next_frame')), dots,
+      btn('', 'plus', addFrame, 'chip', dis, t('add_frame')), btn('', 'copy', () => { if (proj.current > 0) edit(() => proj.frames[proj.current - 1].slice()); }, 'chip', dis || proj.current === 0, t('copy_prev')), btn('', 'del', delFrame, 'chip', dis, t('del_frame')));
     v.append(nav); updateNav();
     if (placement) { const pr = document.createElement('div'); pr.className = 'row'; pr.append(lab(t('drag_to_place')), btn(t('confirm'), null, commitPlacement, 'chip pri'), btn(t('cancel'), null, () => { placement = null; render(); })); v.append(pr); }
     const er = document.createElement('div'); er.className = 'row'; er.append(lab(t('effect')), effectSel(proj.imgEffect, x => proj.imgEffect = x));
     v.append(er); v.append(speedRow(lab(t('speed')), 1, () => proj.imgSpeed, x => proj.imgSpeed = x, ' ms'));
   } else {
-    const ta = document.createElement('input'); ta.type = 'text'; ta.id = 'txt'; ta.value = proj.text; ta.placeholder = t('type_text'); ta.oninput = () => proj.text = ta.value; v.append(ta);
-    const fr = document.createElement('div'); fr.className = 'row'; const fs = document.createElement('select');
+    const ta = document.createElement('input'); ta.type = 'text'; ta.id = 'txt'; ta.setAttribute('aria-label', t('type_text')); ta.value = proj.text; ta.placeholder = t('type_text'); ta.oninput = () => proj.text = ta.value; v.append(ta);
+    const fr = document.createElement('div'); fr.className = 'row'; const fs = document.createElement('select'); fs.setAttribute('aria-label', t('font'));
     fs.add(new Option(t('font_builtin'), 'builtin', false, fontId === 'builtin'));
     allSlf().forEach(f => fs.add(new Option(f.name, f.id, false, fontId === f.id)));
     fs.onchange = () => { fontId = fs.value; store.set('font', fontId); if (fontId !== 'builtin') proj.twoLines = false; render(); };
@@ -218,7 +218,7 @@ const allSlf = () => fonts ? [...fonts.slf, ...customFonts] : [];
 // ---------- modal ----------
 let onClose = null;
 function modal(title, body, actions = []) {
-  const m = $('modal'); m.innerHTML = ''; const h = document.createElement('h3'); h.textContent = title; m.append(h);
+  const m = $('modal'); m.innerHTML = ''; const h = document.createElement('h3'); h.id = 'modal-title'; h.textContent = title; m.append(h);
   if (typeof body === 'string') { const p = document.createElement('p'); p.textContent = body; m.append(p); } else if (body) m.append(body);
   const row = document.createElement('div'); row.className = 'row'; row.style.justifyContent = 'flex-end';
   actions.forEach(a => row.append(a)); m.append(row); $('modalbg').style.display = 'flex';
@@ -242,8 +242,8 @@ function openTools() {
   modal(t('tools'), gr, [closeBtn()]);
 }
 function openInsertText() {
-  const inp = document.createElement('input'); inp.type = 'text'; inp.style.width = '100%'; inp.placeholder = t('text_label');
-  const sel = document.createElement('select'); allSlf().forEach(f => sel.add(new Option(f.name, f.id)));
+  const inp = document.createElement('input'); inp.type = 'text'; inp.style.width = '100%'; inp.placeholder = t('text_label'); inp.setAttribute('aria-label', t('text_label'));
+  const sel = document.createElement('select'); sel.setAttribute('aria-label', t('font')); allSlf().forEach(f => sel.add(new Option(f.name, f.id)));
   const d = document.createElement('div'); d.className = 'row'; d.style.flexDirection = 'column'; d.style.alignItems = 'stretch'; d.append(inp, sel);
   modal(t('insert_text_title'), d, [btn(t('cancel'), null, closeModal), btn(t('ok'), null, () => {
     const st = allSlf().find(f => f.id === sel.value).textStamp(inp.value);
@@ -261,7 +261,7 @@ async function openGallery() {
       const it = document.createElement('div'); it.className = 'gi'; const c = document.createElement('canvas'); c.width = W * CELL; c.height = H * CELL;
       const ctx = c.getContext('2d'), cap = document.createElement('div'); cap.textContent = f.replace(/\.json$/, ''); it.append(c, cap); gr.append(it);
       let i = 0; const draw = () => { drawFrame(ctx, p.frames[i], null); i = (i + 1) % p.frames.length; }; draw(); timers.push(setInterval(draw, Math.max(40, p.imgSpeed)));
-      it.onclick = () => { closeModal(); loadProject(txt, f); proj.current = 0; render(); };
+      const pick = () => { closeModal(); loadProject(txt, f); proj.current = 0; render(); }; it.setAttribute('role', 'button'); it.tabIndex = 0; it.setAttribute('aria-label', cap.textContent); it.onclick = pick; it.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } };
     }
   } catch (e) { gr.textContent = String(e); }
 }
