@@ -113,7 +113,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bitcount+Prop+Double&family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#eef2ec;--panel:#fff;--panel2:#e3eae1;--line:#c5d0c3;--fg:#141a14;--dim:#5b6e58;--accent:#1f8a00;--ink:#fff;--pink:#c2185b;--sh:0 1px 2px #0003,0 4px 14px #0001;--logo:#0d110d}
+:root{--bg:#eef2ec;--panel:#fff;--panel2:#e3eae1;--line:#c5d0c3;--fg:#141a14;--dim:#4d5f4a;--accent:#187000;--ink:#fff;--pink:#c2185b;--sh:0 1px 2px #0003,0 4px 14px #0001;--logo:#0d110d}
 :root[data-theme=dark]{--bg:#080b08;--panel:#121812;--panel2:#1b231b;--line:#263226;--fg:#e4efe2;--dim:#8da38a;--accent:#4eff00;--ink:#06210a;--sh:0 1px 2px #000a,0 6px 22px #000a;--logo:#050805}
 *{box-sizing:border-box}
 body{margin:0;font:15px/1.45 Roboto,system-ui,sans-serif;background:var(--bg);color:var(--fg);transition:background .2s}
@@ -162,9 +162,10 @@ button,select,input,textarea{font:inherit;color:var(--fg)}
 .chip.sel{outline:2px solid var(--accent)}
 #title{font-weight:500;color:var(--dim);flex:1;min-width:80px;font-size:16px}
 #cv{width:100%;aspect-ratio:48/12;background:#050805;border:1px solid #263226;border-radius:12px;touch-action:none;cursor:crosshair;display:block;box-shadow:inset 0 0 20px #0008}
-#dots{display:flex;gap:6px;align-items:center;flex:1;justify-content:center;flex-wrap:wrap}
-#dots i{width:9px;height:9px;border-radius:50%;background:var(--line);cursor:pointer;display:block}
-#dots i.on{background:var(--accent)}
+#dots{display:flex;gap:0;align-items:center;flex:1;justify-content:center;flex-wrap:wrap}
+#dots i{width:24px;height:24px;cursor:pointer;display:grid;place-items:center;border-radius:50%}
+#dots i::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--dim);opacity:.45}
+#dots i.on::before{background:var(--accent);opacity:1}
 input[type=range]{flex:1;min-width:120px;accent-color:var(--accent)}
 select,input[type=text],input[type=number]{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:7px 10px}
 select:focus,input:focus{outline:2px solid var(--accent);outline-offset:-1px}

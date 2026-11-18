@@ -174,7 +174,7 @@ function addFrame() { if (busy()) return; if (proj.frames.length >= MAXF) return
 function delFrame() { if (busy()) return; if (proj.frames.length === 1) proj.frames = [blank()]; else { proj.frames.splice(proj.current, 1); proj.current = Math.min(proj.current, proj.frames.length - 1); } histReset(); render(); }
 function goTo(i) { if (!busy()) { proj.current = Math.max(0, Math.min(proj.frames.length - 1, i)); render(); } }
 function commitPlacement() { if (!placement) return; const b = placement.base; setCur(composed()); record(proj.current, b, cur()); placement = null; render(); }
-function updateNav() { const n = document.getElementById('fnum'); if (n) n.textContent = `${proj.current + 1} / ${proj.frames.length}`; }
+function updateNav() { const n = document.getElementById('fnum'); if (n) n.textContent = `${proj.current + 1} / ${proj.frames.length}`; document.querySelectorAll('#dots i').forEach((d, k) => d.classList.toggle('on', k === proj.current)); }
 const effectSel = (val, fn) => { const s = document.createElement('select'); s.setAttribute('aria-label', t('effect')); P.EFFECTS.forEach(e => s.add(new Option(e, e, false, e === val))); s.onchange = () => fn(s.value); return s; };
 function speedRow(label, min, get, set, unit) {
   const d = document.createElement('div'); d.className = 'row';
